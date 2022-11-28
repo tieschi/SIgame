@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    container_name: db_postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ghbrjkp08
+      POSTGRES_USER: tiesch
+      POSTGRES_DB: sigame_db
+
+  web:
+    build: .
+    restart: always
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./code/
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
